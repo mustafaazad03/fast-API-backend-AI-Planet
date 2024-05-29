@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import fitz  # From PyMuPDF
+import fitz
 import supabase
 import os
 from dotenv import load_dotenv
@@ -216,6 +216,43 @@ async def ask_question(request: QuestionRequest):
         print(e)
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.delete("/delete-pdf/{pdf_id}")
+async def delete_pdf(pdf_id: str):
+    try:
+        # Fetch the PDF data from the database
+        pdf_data = supabase_client.table("pdfs").select("filename").eq("id", pdf_id).single().execute()
+        if pdf_data.data is None:
+            raise HTTPException(status_code=404, detail="PDF not found.")
+
+        # Delete the PDF file from the uploads folder
+        filename = pdf_data.data['filename']
+        # if file exists in the uploads folder then only delete it otherwise ignore
+        file_path = os.path.join("uploads", filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+        # Delete the PDF data from the database
+        supabase_client.table("pdfs").delete().eq("id", pdf_id).execute()
+
+        return JSONResponse(content={"message": "PDF deleted successfully."})
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    
+# Get the history from the supabase database from the pdf_id
+@app.get("/get-history/{pdf_id}")
+async def get_history(pdf_id: str):
+    try:
+        pdf_data = supabase_client.table("pdfs").select("history").eq("id", pdf_id).single().execute()
+        if pdf_data.data is None:
+            raise HTTPException(status_code=404, detail="PDF not found.")
+        if pdf_data.data['history'] is None:
+            raise HTTPException(status_code=404, detail="No history found for the PDF.")
+        history = json.loads(pdf_data.data['history'])
+        return JSONResponse(content={"history": history})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
