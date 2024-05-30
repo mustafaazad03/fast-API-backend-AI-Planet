@@ -145,7 +145,7 @@ The application will be available at `http://127.0.0.1:8000`.
 ## File Structure
 
 ```
-pdf-chat-app/
+fast-API-backend-AI-Planet/
 ├── app/
 │   ├── core/
 │   │   └── config.py
