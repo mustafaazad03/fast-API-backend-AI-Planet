@@ -39,7 +39,7 @@ async def upload_pdf(file: UploadFile):
     if file.content_type != "application/pdf":
         raise HTTPException(status_code=400, detail="Invalid file type. Only PDFs are allowed.")
 
-    # Save the uploaded PDF file in the project directory with a folder named "uploads" (if it doesn't exist) and the filename as the original filename of the uploaded file
+    # Save the uploaded PDF file in the project directory with a folder named "uploads"
     if not os.path.exists("uploads"):
         os.makedirs("uploads")
     
