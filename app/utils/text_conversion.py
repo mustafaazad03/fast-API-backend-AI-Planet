@@ -3,7 +3,9 @@ import re
 def convert_to_html(text):
     # Convert headers
     text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
-
+    text = re.sub(r'\n', r'<br>', text)
+    text = re.sub(r'\* (.*?)<br>', r'<li>\1</li>', text)
+    
     # Convert newlines and list items
     text = re.sub(r'\n', r'<br>', text)
     text = re.sub(r'\* (.*?)<br>', r'<li>\1</li>', text)
