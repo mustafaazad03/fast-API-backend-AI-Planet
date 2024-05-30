@@ -13,6 +13,7 @@ deprecation==2.1.0
 dnspython==2.6.1
 email_validator==2.1.1
 exceptiongroup==1.2.1
+faiss-cpu==1.8.0
 fastapi==0.111.0
 fastapi-cli==0.0.4
 frozenlist==1.4.1
@@ -41,6 +42,7 @@ langchain==0.2.1
 langchain-community==0.2.1
 langchain-core==0.2.1
 langchain-google-genai==1.0.5
+langchain-pinecone==0.1.1
 langchain-text-splitters==0.2.0
 langsmith==0.1.63
 markdown-it-py==3.0.0
@@ -52,6 +54,7 @@ mypy-extensions==1.0.0
 numpy==1.26.4
 orjson==3.10.3
 packaging==23.2
+pinecone-client==3.2.2
 postgrest==0.16.4
 proto-plus==1.23.0
 protobuf==4.25.3
